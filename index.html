@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Holy Unblocker Frontend</title>
+<title>Simple Proxy Frontend</title>
 <style>
   body {
     font-family: Arial, sans-serif;
-    padding: 2rem;
-    background: #121212;
+    padding: 1rem;
+    background: #222;
     color: #eee;
     text-align: center;
   }
@@ -16,43 +16,42 @@
     padding: 0.5rem;
     font-size: 1rem;
     margin: 0.5rem;
+    width: 60vw;
+    max-width: 600px;
   }
   iframe {
+    margin-top: 1rem;
     width: 90vw;
     height: 70vh;
     border: none;
-    margin-top: 1rem;
   }
 </style>
 </head>
 <body>
-  <h1>Holy Unblocker Proxy Frontend</h1>
-
-  <input type="text" id="urlInput" placeholder="Enter URL to proxy" style="width: 60%;" />
+  <h1>Simple Proxy Frontend</h1>
+  <input type="text" id="urlInput" placeholder="Enter URL to proxy (e.g. https://example.com)" />
   <button id="goBtn">Go</button>
-
-  <iframe id="proxyFrame" src="" title="Proxy Frame"></iframe>
+  <iframe id="proxyFrame" src=""></iframe>
 
   <script>
     // Change this to your backend URL
-    const backendURL = "https://3ebaf411fcde.ngrok-free.app";
+    const backendURL = "http://localhost:8080";
 
-    const input = document.getElementById("urlInput");
-    const btn = document.getElementById("goBtn");
-    const iframe = document.getElementById("proxyFrame");
+    const input = document.getElementById('urlInput');
+    const button = document.getElementById('goBtn');
+    const iframe = document.getElementById('proxyFrame');
 
-    btn.addEventListener("click", () => {
+    button.addEventListener('click', () => {
       let url = input.value.trim();
-      if (!url) return alert("Please enter a URL.");
-
-      // Normalize URL (add https if missing)
-      if (!/^https?:\/\//i.test(url)) {
-        url = "https://" + url;
+      if (!url) {
+        alert("Please enter a URL.");
+        return;
       }
-
-      // Encode the URL and append to proxy path
-      const proxiedURL = backendURL + encodeURIComponent(url);
-      iframe.src = proxiedURL;
+      if (!/^https?:\/\//i.test(url)) {
+        url = "https://" + url; // add https if missing
+      }
+      const proxiedUrl = `${backendURL}/proxy?url=${encodeURIComponent(url)}`;
+      iframe.src = proxiedUrl;
     });
   </script>
 </body>
